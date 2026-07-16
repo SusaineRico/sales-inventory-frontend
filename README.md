@@ -66,3 +66,23 @@ npm run build
 ```
 
 Output goes to `dist/` — deployable to Vercel, Netlify, or any static host.
+
+## Setup Journey & Notes
+
+Compared to the backend (see [sales-inventory-backend](https://github.com/SusaineRico/sales-inventory-backend) for that saga), getting the frontend running was fairly smooth. A couple of things worth noting:
+
+### Tailwind CSS v4 setup differs from v3
+Following older tutorials, I initially tried `npx tailwindcss init -p` to generate a `tailwind.config.js` — this failed with `could not determine executable to run`. Turned out the installed version was Tailwind v4, which uses a different setup entirely: no config file generation step, and configuration happens via a `@theme` block directly in CSS instead of a JS config file. Also uses a dedicated Vite plugin (`@tailwindcss/vite`) rather than PostCSS.
+
+**Lesson:** always check which major version a tool installed before following a tutorial — breaking changes between major versions (like Tailwind v3 → v4) can make old instructions fail in confusing ways.
+
+### CSS `@import` order
+Got a build warning: `@import rules must precede all rules aside from @charset and @layer statements`. This was because I had the Google Fonts `@import` listed *after* the Tailwind `@import` in `index.css`. CSS requires all `@import` statements to come first in a file — fixed by reordering them.
+
+### Running frontend and backend together
+Since this is a separate app from the backend (different `package.json`, different dev server), I run both at once using two terminal tabs in the same VSCode window, with both project folders added to one multi-root workspace (`File → Add Folder to Workspace`). The frontend's `vite.config.js` proxies `/api` requests to `http://localhost:5000` in development, so the backend needs to already be running before the frontend can successfully log in or fetch data.
+
+### Key takeaways
+- Check package major versions before following setup guides — Tailwind v3 vs v4 instructions are not interchangeable
+- CSS `@import` statements are order-sensitive
+- A multi-root VSCode workspace is a clean way to develop two related-but-separate apps (frontend/backend) side by side without juggling multiple windows
