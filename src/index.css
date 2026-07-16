@@ -1,0 +1,42 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  --color-ink: #1a2332;
+  --color-ink-light: #2d3b52;
+  --color-paper: #faf8f3;
+  --color-paper-dim: #f0ede4;
+  --color-amber: #d4a12e;
+  --color-amber-dark: #b8871f;
+  --color-sage: #5c7a5c;
+  --color-sage-light: #7d9a7d;
+  --color-rust: #b5533c;
+  --color-line: #ddd7c8;
+}
+
+body {
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+}
+
+/* Perforated receipt edge effect */
+.receipt-edge {
+  position: relative;
+}
+.receipt-edge::before,
+.receipt-edge::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 12px;
+  background-image: radial-gradient(circle, var(--color-paper) 5px, transparent 5.5px);
+  background-size: 16px 16px;
+  background-position: 0 -4px;
+}
+.receipt-edge::before { top: -6px; }
+.receipt-edge::after { bottom: -6px; transform: rotate(180deg); }
